@@ -30,31 +30,31 @@ public class CompanyServiceImpl implements CompanyService {
 
     public boolean postService(Long userId, ServiceDTO serviceDTO) throws IOException {
         Optional<User> optionalUser = userRepository.findById(userId);
-         if (optionalUser.isPresent()) {
-             Ad ad = new Ad();
-             ad.setServiceName(serviceDTO.getServiceName());
-             ad.setDescription(serviceDTO.getDescription());
-             ad.setImg(serviceDTO.getImg().getBytes());
-             ad.setPrice(serviceDTO.getPrice());
-             ad.setUser(optionalUser.get());
+        if (optionalUser.isPresent()) {
+            Ad ad = new Ad();
+            ad.setServiceName(serviceDTO.getServiceName());
+            ad.setDescription(serviceDTO.getDescription());
+            ad.setImg(serviceDTO.getImg().getBytes());
+            ad.setPrice(serviceDTO.getPrice());
+            ad.setUser(optionalUser.get());
 
-             serviceRepository.save(ad);
-             return true;
+            serviceRepository.save(ad);
+            return true;
 
-         }
-         return false;
+        }
+        return false;
     }
- public List<ServiceDTO> getAllServices(Long userId) {
+    public List<ServiceDTO> getAllServices(Long userId) {
         return serviceRepository.findAllByUserId(userId).stream().map(Ad :: getServiceDTO).collect(Collectors.toList());
- }
+    }
 
- public ServiceDTO getAdById(Long adId) {
+    public ServiceDTO getAdById(Long adId) {
         Optional<Ad> optionalAd = serviceRepository.findById(adId);
         if (optionalAd.isPresent()) {
             return optionalAd.get().getServiceDTO();
         }
-      return null;
- }
+        return null;
+    }
 
 
 

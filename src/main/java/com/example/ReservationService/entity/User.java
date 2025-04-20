@@ -1,20 +1,17 @@
 package com.example.ReservationService.entity;
 
-
 import com.example.ReservationService.dto.UserDto;
 import com.example.ReservationService.enums.UserRole;
-import jakarta.persistence.Table;
+import com.example.ReservationService.observer.ReservationObserver;
 import jakarta.persistence.*;
-
 import lombok.Data;
-import lombok.Generated;
 
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public class User implements ReservationObserver {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -22,12 +19,12 @@ public class User {
     private String name;
     private String lastname;
     private String phone;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
-
-    public UserDto getDto(){
-        UserDto  userDto=new UserDto();
-
+    public UserDto getDto() {
+        UserDto userDto = new UserDto();
         userDto.setId(id);
         userDto.setEmail(email);
         userDto.setPassword(password);
@@ -36,8 +33,14 @@ public class User {
         userDto.setPhone(phone);
         userDto.setRole(role);
         return userDto;
-
     }
 
-
+    @Override
+    public void update(Reservation reservation) {
+        // ✅ Seuls les clients sont notifiés
+        if (this.role == UserRole.CLIENT) {
+            System.out.println("Notification envoyée à " + this.email +
+                    ": Votre réservation est maintenant " + reservation.getReservationStatus());
+        }
+    }
 }
