@@ -49,15 +49,8 @@ public boolean bookService(ReservationDTO reservationDTO) {
     Optional<User> optionalUser = userRepository.findById(reservationDTO.getUserId());
 
     if(optionalAd.isPresent() && optionalUser.isPresent()){
-        Reservation reservation = new Reservation();
-
-         reservation.setBookDate(reservationDTO.getBookDate());
-         reservation.setReservationStatus(ReservationStatus.ENATTENTE);
-         reservation.setUser(optionalUser.get());
-
-         reservation.setAd(optionalAd.get());
-         reservation.setCompany(optionalAd.get().getUser());
-         reservation.setReviewStatus(ReviewStatus.FAUX);
+        // Utilisation du Creator via DTO
+        Reservation reservation = reservationDTO.toReservation(optionalUser.get(), optionalAd.get());
 
          reservationRepository.save(reservation);
          return true;
@@ -86,13 +79,8 @@ public boolean giveReview(ReviewDTO reviewDTO){
         Optional <User> optionalUser= userRepository.findById(reviewDTO.getUserId());
         Optional <Reservation> optionalBooking= reservationRepository.findById(reviewDTO.getBookId());
         if(optionalUser.isPresent() && optionalBooking.isPresent()){
-            Review review = new Review();
-
-            review.setReviewDate(new Date());
-            review.setReview(reviewDTO.getReview());
-            review.setRating(reviewDTO.getRating());
-            review.setUser(optionalUser.get());
-            review.setAd(optionalBooking.get().getAd());
+            // Utilisation du Creator via DTO
+            Review review = reviewDTO.toReview(optionalUser.get(), optionalBooking.get().getAd());
 
             reviewRepository.save(review);
             Reservation booking= optionalBooking.get();

@@ -31,13 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
     public boolean postService(Long userId, ServiceDTO serviceDTO) throws IOException {
         Optional<User> optionalUser = userRepository.findById(userId);
          if (optionalUser.isPresent()) {
-             Ad ad = new Ad();
-             ad.setServiceName(serviceDTO.getServiceName());
-             ad.setDescription(serviceDTO.getDescription());
-             ad.setImg(serviceDTO.getImg().getBytes());
-             ad.setPrice(serviceDTO.getPrice());
-             ad.setUser(optionalUser.get());
-
+             // Utilisation du Creator via DTO
+             Ad ad = serviceDTO.toAd(optionalUser.get());
              serviceRepository.save(ad);
              return true;
 
