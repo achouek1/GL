@@ -10,7 +10,7 @@ public class JwtUtilTest {
         JwtUtil instance1 = JwtUtil.getInstance();
         JwtUtil instance2 = JwtUtil.getInstance();
 
-        // Vérifie que les deux instances sont identiques
+        // verification que les deux instances sont identiques
         assertSame(instance1, instance2, "Les instances doivent être les mêmes");
     }
 }

@@ -45,7 +45,7 @@ public class AuthenticationController {
 
     public ResponseEntity<?> signupClient(@RequestBody SignupRequestDTO signupRequestDTO){
         if (authService.presentByEmail(signupRequestDTO.getEmail())) {
-            return new ResponseEntity<>("Client existe deja avec cet email", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Client existe  avec cet email", HttpStatus.NOT_ACCEPTABLE);
         }
         UserDto createdUser = authService.signupClient(signupRequestDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.OK);

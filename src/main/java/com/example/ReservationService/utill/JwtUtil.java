@@ -17,17 +17,17 @@ public class JwtUtil {
     private static volatile JwtUtil instance; // Singleton thread-safe
     private final Key signKey;
 
-    // Constructeur privé
+    //Constructeur privé
     private JwtUtil() {
         this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
     }
 
-    // Méthode d'accès Singleton
+    // Méthode pour access Singleton
     public static JwtUtil getInstance() {
         if (instance == null) {
             synchronized (JwtUtil.class) {
                 if (instance == null) {
-                    instance = new JwtUtil();
+                    instance = new JwtUtil() ;
                 }
             }
         }
