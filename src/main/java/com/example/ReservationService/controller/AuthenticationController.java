@@ -33,8 +33,7 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private JwtUtil jwtUtil;;
+    private final JwtUtil jwtUtil = JwtUtil.getInstance();
 
     public static final String TOKEN_PREFIX="Bearer ";
     public static final String HEADER_STRING ="Authorization";
