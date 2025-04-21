@@ -51,12 +51,7 @@ public class Reservation {
     // Initialise l'état après le chargement depuis la base
     @PostLoad
     private void initState() {
-        this.currentState = switch(this.reservationStatus) {
-            case ENATTENTE -> new PendingState();
-            case APPROUVÉ -> new ApprovedState();
-            case REJETÉ -> new RejectedState();
-            default -> throw new IllegalStateException("Statut inconnu: " + this.reservationStatus);
-        };
+        this.currentState = StateFactory.getState(this.reservationStatus); // Appel à la factory
     }
 
     // Méthodes pour gérer les transitions d'état
