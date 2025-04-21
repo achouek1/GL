@@ -11,10 +11,7 @@ import java.util.List;
 public interface ClientService {
      List<ServiceDTO> getAllServices();
      List<ServiceDTO> searchAdByName(String name);
-     boolean bookService(ReservationDTO reservationDTO);
      AdDetailsForClientDTO getAdDetailsByAdId(Long adId);
-     List<ReservationDTO> getAllBookingsByUserId(Long userId);
-     boolean giveReview(ReviewDTO reviewDTO);
 
 
 }

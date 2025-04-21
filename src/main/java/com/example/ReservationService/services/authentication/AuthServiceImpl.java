@@ -12,8 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl  implements AuthService{
 
+
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public AuthServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     public UserDto signupClient (SignupRequestDTO signupRequestDTO) {
 
