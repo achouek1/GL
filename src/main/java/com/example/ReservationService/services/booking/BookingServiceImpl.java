@@ -9,6 +9,8 @@ import com.example.ReservationService.repository.ServiceRepository;
 import com.example.ReservationService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +29,20 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean bookService(ReservationDTO reservationDTO) {
+
+        // Validation de date
+        if (reservationDTO.getBookDate().before(new Date())) {
+            throw new IllegalArgumentException("La date de réservation est dans le passé");
+        }
+
+        // Vérification de disponibilité (nouvelle contrainte)
+        List<Reservation> existingReservations = reservationRepository
+                .findByAdIdAndBookDate(reservationDTO.getAdId(), reservationDTO.getBookDate());
+
+        if (!existingReservations.isEmpty()) {
+            throw new IllegalStateException("Ce service est déjà réservé pour cette date");
+        }
+
         Optional<Ad> optionalAd = serviceRepository.findById(reservationDTO.getAdId());
         Optional<User> optionalUser = userRepository.findById(reservationDTO.getUserId());
 

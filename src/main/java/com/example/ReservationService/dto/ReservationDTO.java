@@ -8,11 +8,14 @@ import com.example.ReservationService.enums.ReviewStatus;
 import lombok.Data;
 
 import java.util.Date;
+import javax.validation.constraints.FutureOrPresent;
+
 
 @Data
 public class ReservationDTO {
 
     private Long id;
+    @FutureOrPresent(message = "La date de réservation doit être aujourd'hui ou dans le futur")
     private Date bookDate;
     private String serviceName;
  private ReservationStatus reservationStatus;
