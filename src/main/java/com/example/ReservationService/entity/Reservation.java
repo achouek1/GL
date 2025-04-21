@@ -70,6 +70,14 @@ public class Reservation {
         this.reservationStatus = this.currentState.getStatus();
     }
 
+    // Méthode utilisée par le contrôleur GRASP
+    public void processAction(String action) {
+        switch (action.toLowerCase()) {
+            case "approve" -> this.approve();
+            case "reject" -> this.reject();
+            default -> throw new IllegalArgumentException("Action non supportée: " + action);
+        }
+    }
 
     // Conversion en DTO
     public ReservationDTO getReservationDTO() {
