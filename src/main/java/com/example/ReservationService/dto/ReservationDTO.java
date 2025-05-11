@@ -22,17 +22,7 @@ public class ReservationDTO {
     private Long companyId;
     private Long adId;
 
-    // Méthode de création (GRASP Creator):création de reservation
-    public Reservation toReservation(User user, Ad ad) {
-        Reservation reservation = new Reservation();
-        reservation.setBookDate(this.bookDate);
-        reservation.setReservationStatus(ReservationStatus.ENATTENTE);
-        reservation.setReviewStatus(ReviewStatus.FAUX);
-        reservation.setUser(user);
-        reservation.setAd(ad);
-        reservation.setCompany(ad.getUser());
-        return reservation;
-    }
+
 
 
 

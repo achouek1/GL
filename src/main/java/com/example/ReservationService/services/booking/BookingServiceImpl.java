@@ -4,6 +4,7 @@ import com.example.ReservationService.dto.ReservationDTO;
 import com.example.ReservationService.entity.Ad;
 import com.example.ReservationService.entity.Reservation;
 import com.example.ReservationService.entity.User;
+import com.example.ReservationService.factory.ReservationFactory;
 import com.example.ReservationService.repository.ReservationRepository;
 import com.example.ReservationService.repository.ServiceRepository;
 import com.example.ReservationService.repository.UserRepository;
@@ -25,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
     private ReservationRepository reservationRepository;
 
     @Override
-    public boolean bookService(ReservationDTO reservationDTO) {
+    /*public boolean bookService(ReservationDTO reservationDTO) {
 
         // Validation de date
         if (reservationDTO.getBookDate().before(new Date())) {
@@ -52,6 +53,24 @@ public class BookingServiceImpl implements BookingService {
         }
         return false;
     }
+*/
+    public boolean bookService(ReservationDTO reservationDTO) {
+        Optional<Ad> ad = serviceRepository.findById(reservationDTO.getAdId());
+        Optional<User> user = userRepository.findById(reservationDTO.getUserId());
+
+        if (ad.isPresent() && user.isPresent()) {
+            // Utilisation de la Factory
+            Reservation reservation = ReservationFactory.createReservation(
+                    reservationDTO,
+                    user.get(),
+                    ad.get()
+            );
+            reservationRepository.save(reservation);
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public List<ReservationDTO> getAllBookingsByUserId(Long userId) {

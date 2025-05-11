@@ -6,6 +6,7 @@ import com.example.ReservationService.entity.Ad;
 import com.example.ReservationService.entity.Reservation;
 import com.example.ReservationService.entity.User;
 import com.example.ReservationService.enums.ReservationStatus;
+import com.example.ReservationService.factory.AdFactory;
 import com.example.ReservationService.repository.ReservationRepository;
 import com.example.ReservationService.repository.ServiceRepository;
 import com.example.ReservationService.repository.UserRepository;
@@ -28,16 +29,19 @@ public class CompanyServiceImpl implements CompanyService {
     private ReservationRepository reservationRepository;
 
 
-    public boolean postService(Long userId, ServiceDTO serviceDTO) throws IOException {
-        Optional<User> optionalUser = userRepository.findById(userId);
-         if (optionalUser.isPresent()) {
-             // Utilisation du Creator via DTO
-             Ad ad = serviceDTO.toAd(optionalUser.get());
-             serviceRepository.save(ad);
-             return true;
-         }
-         return false;
+    public boolean postService(Long userId, ServiceDTO serviceDTO)
+            throws IOException {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            // Appel à la Factory
+            Ad ad = AdFactory.createAdFromDTO(serviceDTO, user.get());
+            ad.setImg(serviceDTO.getImg().getBytes());
+            serviceRepository.save(ad);
+            return true;
+        }
+        return false;
     }
+
  public List<ServiceDTO> getAllServices(Long userId) {
         return serviceRepository.findAllByUserId(userId).stream().map(Ad :: getServiceDTO).collect(Collectors.toList());
  }
@@ -51,8 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
  }
 
 
-
-    public boolean updateAd (Long adId, ServiceDTO serviceDTO) throws IOException {
+ public boolean updateAd (Long adId, ServiceDTO serviceDTO) throws IOException {
         Optional<Ad> optionalAd = serviceRepository.findById(adId);
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
@@ -69,7 +72,6 @@ public class CompanyServiceImpl implements CompanyService {
             return false;
         }
     }
-
     public boolean deleteAd(Long adId) {
         Optional<Ad> optionalAd = serviceRepository.findById(adId);
         if (optionalAd.isPresent()) {

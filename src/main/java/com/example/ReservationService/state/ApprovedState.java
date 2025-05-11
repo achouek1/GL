@@ -2,7 +2,7 @@ package com.example.ReservationService.state;
 import com.example.ReservationService.entity.Reservation;
 import com.example.ReservationService.enums.ReservationStatus;
 
-public class ApprovedState implements ReservationState {
+public abstract class ApprovedState implements ReservationState {
     @Override
     public void approve(Reservation reservation) {
         throw new IllegalStateException("Déjà approuvée");
