@@ -3,6 +3,8 @@ package com.example.ReservationService.entity;
 import com.example.ReservationService.dto.ReservationDTO;
 import com.example.ReservationService.enums.ReservationStatus;
 import com.example.ReservationService.enums.ReviewStatus;
+import com.example.ReservationService.state.ReservationState;
+import com.example.ReservationService.state.StateFactory;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -16,6 +18,9 @@ import java.util.Date;
 @Data
 
 public class Reservation {
+    @Transient
+    private ReservationState currentState;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -54,5 +59,13 @@ public class Reservation {
         return dto;
 
     }
+    // Met à jour l'état via la fabrique
+    public void setReservationStatus(ReservationStatus status) {
+        this.currentState = StateFactory.getInstance().createState(status);
+    }
+
+    // Délègue les actions à l'état courant
+    public void approve() { currentState.approve(this); }
+    public void reject() { currentState.reject(this); }
 
 }

@@ -17,13 +17,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-
     @Autowired
     private ServiceRepository serviceRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ReservationRepository reservationRepository;
 

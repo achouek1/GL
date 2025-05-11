@@ -21,7 +21,6 @@ public class JwtUtil {
     private JwtUtil() {
         this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
     }
-
     // Méthode d'acces Singleton
     public static JwtUtil getInstance() {
         if (instance == null) {
@@ -30,9 +29,7 @@ public class JwtUtil {
                     instance = new JwtUtil();
                 }
             }
-        }
-        return instance;
-    }
+        }return instance; }
 
 
     public String generateToken(String userName) {

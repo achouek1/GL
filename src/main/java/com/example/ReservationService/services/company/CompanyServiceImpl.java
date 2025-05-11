@@ -35,7 +35,6 @@ public class CompanyServiceImpl implements CompanyService {
              Ad ad = serviceDTO.toAd(optionalUser.get());
              serviceRepository.save(ad);
              return true;
-
          }
          return false;
     }
@@ -85,7 +84,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .stream().map(Reservation::getReservationDTO).collect(Collectors.toList());
     }
 
-    public boolean changeBookingStatus(Long bookingId, String status){
+    /*public boolean changeBookingStatus(Long bookingId, String status){
         Optional<Reservation> optionalReservation = reservationRepository.findById(bookingId);
         if (optionalReservation.isPresent()) {
             Reservation existingReservation = optionalReservation.get();
@@ -99,8 +98,21 @@ public class CompanyServiceImpl implements CompanyService {
             return true;
         }
         return false;
-    }
+    }*/
 
+        public boolean changeBookingStatus(Long bookingId, String status) {
+            Optional<Reservation> reservation = reservationRepository.findById(bookingId);
+            if (reservation.isPresent()) {
+                ReservationStatus targetStatus = ("Accepter".equals(status))
+                        ? ReservationStatus.APPROUVÉ
+                        : ReservationStatus.REJETÉ;
+
+                reservation.get().setReservationStatus(targetStatus); // Utilise StateFactory
+                reservationRepository.save(reservation.get());
+                return true;
+            }
+            return false;
+        }
 
 
 

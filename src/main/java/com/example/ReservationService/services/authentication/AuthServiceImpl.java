@@ -20,7 +20,6 @@ public class AuthServiceImpl  implements AuthService{
         this.userRepository = userRepository;
     }
 
-
     public UserDto signupClient (SignupRequestDTO signupRequestDTO) {
 
         User user =new User();
@@ -41,7 +40,6 @@ public class AuthServiceImpl  implements AuthService{
     public Boolean presentByEmail(String email) {
         return userRepository.findFirstByEmail(email)!= null;
     }
-
     public UserDto signupCompany (SignupRequestDTO signupRequestDTO) {
 
         User user =new User();
